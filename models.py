@@ -13,8 +13,12 @@ from sqlalchemy import (
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+#mysql shell 설치
+#mysqlconnector intsall
+
 
 SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:rlarmadud123!@localhost/dart"
+#개별 mysql 로컬 비밀번호로 바꿔야함
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -74,10 +78,7 @@ class AccountHistory(Base):
     account_id = Column(Integer, ForeignKey("account.account_id", ondelete="CASCADE"))
     updated_date = Column(TIMESTAMP, server_default=func.current_timestamp())
     total_value = Column(DECIMAL(15, 2), nullable=False)
-    currency_id = Column(
-        Integer, ForeignKey("currency.id"), nullable=False
-    )  # currency 관계
-
+    currency_id = Column(Integer, ForeignKey("currency.id"), nullable=False)  # currency 관계
 
 class Currency(Base):
     __tablename__ = "currency"
