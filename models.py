@@ -1,4 +1,15 @@
-from sqlalchemy import Column, Integer, String, Float, DECIMAL, TIMESTAMP, ForeignKey, Enum, create_engine, func
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Float,
+    DECIMAL,
+    TIMESTAMP,
+    ForeignKey,
+    Enum,
+    create_engine,
+    func,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -18,15 +29,15 @@ class User(Base):
     created_at = Column(TIMESTAMP, server_default=func.current_timestamp())
 
 
-
 class Account(Base):
     __tablename__ = "account"
     account_id = Column(Integer, primary_key=True, autoincrement=True)
     userEmail = Column(String(255), ForeignKey("user.email", ondelete="CASCADE"))
     account_name = Column(String(255), nullable=False)
     deposit = Column(DECIMAL(15, 2), default=0.0)
-    currency_id = Column(Integer, ForeignKey("currency.id"), nullable=False)  # currency 관계
-    
+    currency_id = Column(
+        Integer, ForeignKey("currency.id"), nullable=False
+    )  # currency 관계
 
 
 class Investment(Base):
@@ -37,8 +48,10 @@ class Investment(Base):
     quantity = Column(Float, nullable=False)
     purchase_price = Column(DECIMAL(10, 2), nullable=False)
     current_price = Column(DECIMAL(10, 2), nullable=False)
-    total_value = Column(DECIMAL(15, 2)) 
-    currency_id = Column(Integer, ForeignKey("currency.id"), nullable=False)  # currency 관계
+    total_value = Column(DECIMAL(15, 2))
+    currency_id = Column(
+        Integer, ForeignKey("currency.id"), nullable=False
+    )  # currency 관계
 
 
 class Transaction(Base):
@@ -46,11 +59,13 @@ class Transaction(Base):
     transaction_id = Column(Integer, primary_key=True, autoincrement=True)
     account_id = Column(Integer, ForeignKey("account.account_id", ondelete="CASCADE"))
     stock_symbol = Column(String(50))
-    transaction_type = Column(Enum('BUY', 'SELL'), nullable=False)
+    transaction_type = Column(Enum("BUY", "SELL"), nullable=False)
     quantity = Column(Float, nullable=False)
     buysell_price = Column(DECIMAL(10, 2), nullable=False)
     transaction_date = Column(TIMESTAMP, server_default=func.current_timestamp())
-    currency_id = Column(Integer, ForeignKey("currency.id"), nullable=False)  # currency 관계
+    currency_id = Column(
+        Integer, ForeignKey("currency.id"), nullable=False
+    )  # currency 관계
 
 
 class AccountHistory(Base):
@@ -59,12 +74,17 @@ class AccountHistory(Base):
     account_id = Column(Integer, ForeignKey("account.account_id", ondelete="CASCADE"))
     updated_date = Column(TIMESTAMP, server_default=func.current_timestamp())
     total_value = Column(DECIMAL(15, 2), nullable=False)
-        currency_id = Column(Integer, ForeignKey("currency.id"), nullable=False)  # currency 관계
+    currency_id = Column(
+        Integer, ForeignKey("currency.id"), nullable=False
+    )  # currency 관계
+
 
 class Currency(Base):
     __tablename__ = "currency"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    currency_code = Column(String(10), unique=True, nullable=False)  # 화폐코드 USD,EUR,KRW
+    currency_code = Column(
+        String(10), unique=True, nullable=False
+    )  # 화폐코드 USD,EUR,KRW
     exchange_rate = Column(DECIMAL(10, 4), nullable=False)  # 1 USD 기준 환율
 
 
